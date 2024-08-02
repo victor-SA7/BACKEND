@@ -1,30 +1,39 @@
 const connection = require("../database/connection");
-const {DataTypes} = require('sequelize');
+const { DataTypes } = require("sequelize");
 
-
-let userModel = connection.define("User", {
+let UserModel = connection.define("User", {
     firstname: {
-    type:DataTypes.STRING(50),
-    allowNull: false,    
-    },    //firstname varchar(50)
-    
-    surname: {
-       type: DataTypes.STRING(50),
+        type: DataTypes.STRING(50),
         allowNull: false,
-    },     //surname varchar(50)
-
-
-    email:{
+        validate: {
+            notEmpty: true,
+            len: [1, 50]
+        }
+    },
+    surname: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+            len: [1, 50]
+        }
+    },
+    email: {
         type: DataTypes.STRING(255),
-        allowNull:false
-    },     //email varchar(255)
-
-
-    password:{
+        allowNull: false,
+        unique: true, 
+        validate: {
+            isEmail: true 
+        }
+    },
+    password: {
         type: DataTypes.STRING(255),
-        allowNull:false,
-    },         //password varchar(255)
+        allowNull: false,
+        validate: {
+            notEmpty: true,
+            len: [8, 255] 
+        }
+    }
 });
 
-
-module.exports = userModel;
+module.exports = UserModel;
