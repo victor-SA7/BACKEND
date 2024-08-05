@@ -3,37 +3,21 @@ const app = express();
 
 app.use(express.json());
 
-const ProductModel = require("./models/ProductModel");
-const userModel = require('./models/UserModels');
-const UserModel = require('./models/UserModels');
 
-app.get('/products', async function (request, response) {
-    const products = await ProductModel.findAll();
-    response.json(products);
-});
-app.get('/users', async function (request, response) {
-    const users = await userModel.findAll();
-    response.json(users);
-});
-
-app.post("/users", function(request, response){
-    UserModel.create(request.body);
-    return response.json({
-        messagem :"usuario criado com sucesso!"
-    });
-}
-);
-
-app.post("/product", function(request, response){
-    ProductModel.create(request.body);
-    return response.json({
-        messagem :"Produto recebeido com sucesso"
-    });
-});
+const UserControllers = require("./controllers/UserControllers");
+const ProductController = require('./controllers/ProductController');
 
 
+app.get('/products', ProductController.list);
+app.post("/products", ProductController.create);
+app.put('/products/:id', ProductController.update);
+app.delete('/products/:id', ProductController.delete);
 
 
+app.get('/users', UserControllers.list);
+app.post("/users", UserControllers.create);
+app.put('/users/:id', UserControllers.update);
+app.delete('/users/:id', UserControllers.delete);
 app.listen(3000);
 
 

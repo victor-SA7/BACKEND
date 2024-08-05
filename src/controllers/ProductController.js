@@ -1,14 +1,37 @@
 const ProductModel = require("../models/ProductModel");
-const { list } = require("./UserControllers");
+const { list, update } = require("./UserControllers");
 
 const ProductController = {
-    create(riquelme){
-        ProductModel.create(riquelme.body);
+    create(request, response) {
+        ProductModel.create(request.body);
+        return response.json({
+            messagem: "Produto recebeido com sucesso"
+        });
     },
 
-    async list(){
-        let produtos = await ProductModel.findAll();
-        console.log()
+    async list(request, response) {
+        const products = await ProductModel.findAll();
+        response.json(products);
+    },
+
+
+    async update(request, response) {
+        let id = request.params.id;
+        ProductModel.update(request.body, {
+            where: { id }
+        });
+        return response.json({
+            messagem: "Produto atualizado com sucesso"
+        })
+    },
+    async delete(request, response) {
+        let id = request.params.id;
+        ProductModel.destroy({
+            where: { id }
+        });
+        return response.json({
+            messagem: "Produto deletado com sucesso"
+        })
     }
 }
 
